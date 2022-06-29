@@ -14,6 +14,11 @@ namespace ConsoleApp1
             pairs = _pairs;
             }
 
+        /// <summary>
+        /// Обмен b-элементов пар по индексам
+        /// </summary>
+        /// <param name="_a"></param>
+        /// <param name="_b"></param>
         public void Permutation(int _a, int _b)
             {
             Vector2 temp = pairs[_a].b;
@@ -21,6 +26,10 @@ namespace ConsoleApp1
             pairs[_b].b = temp;
             }
 
+        /// <summary>
+        /// Поиск пары и наибольшим расстоянием между элементами.
+        /// </summary>
+        /// <returns>Индекс найденного элемента в массиве и расстояние</returns>
         public (int, float) ChercherIndexMaxPairesDist()
             {
             int indexMaxDistPairs = 0;
@@ -40,6 +49,11 @@ namespace ConsoleApp1
             return (indexMaxDistPairs, distMax);
             }
 
+        /// <summary>
+        /// Найти индекс элемента блишайшего к pairs[_index].a
+        /// </summary>
+        /// <param name="_index"></param>
+        /// <returns>Индекс ближайшего элемента</returns>
         public int RecoirIndexProchenElement(int _index)
             {
             float minDist = float.PositiveInfinity;
