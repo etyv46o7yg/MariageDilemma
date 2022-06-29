@@ -5,6 +5,10 @@ using System.Numerics;
 
 namespace ConsoleApp1
     {
+    /*
+     * 
+     * Комент, проверка
+     */
     class Program
         {
         static void Main(string [] args)
