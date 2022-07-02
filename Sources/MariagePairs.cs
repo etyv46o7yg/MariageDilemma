@@ -54,7 +54,7 @@ namespace ConsoleApp1
         /// </summary>
         /// <param name="_index"></param>
         /// <returns>Индекс ближайшего элемента</returns>
-        public int RecoirIndexProchenElement(int _index)
+        public int RecoirIndexProchenElement(int _index, HashSet<int> utiliser)
             {
             float minDist = float.PositiveInfinity;
             int indexProchen = 0;
@@ -62,14 +62,14 @@ namespace ConsoleApp1
 
             for (int i = 0; i < pairs.Count; i++)
                 {
-                float dist = (pairs[i].a - referenceVale).Length();
-                if (dist < minDist && i != _index)
+                float dist = (pairs[i].b - referenceVale).Length();
+                if (dist < minDist && i != _index && !utiliser.Contains(i))
                     {
                     minDist = dist;
                     indexProchen = i;
                     }
                 }
-
+            //Console.WriteLine(referenceVale + " " + pairs[indexProchen].b);
             return indexProchen;
             }
 
@@ -79,12 +79,12 @@ namespace ConsoleApp1
 
             foreach (var item in pairs)
                 {
-                res += Environment.NewLine + item.ToString() ;
+                res += Environment.NewLine + item.ToString() + " " + item.RecoitDist() ;
                 }
 
             Console.WriteLine(res);
             var temp = ChercherIndexMaxPairesDist();
-            Console.WriteLine( temp.Item1 + " " + temp.Item2);
+            Console.WriteLine( "Худший случай " + temp.Item1 + " " + temp.Item2);
             }
         }
     }

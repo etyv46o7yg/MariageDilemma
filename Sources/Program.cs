@@ -14,12 +14,12 @@ namespace ConsoleApp1
         static void Main(string [] args)
             {
             List<Vector2> posA = new List<Vector2>();
+            posA.Add(new Vector2(0, 6));
+            posA.Add(new Vector2(0, 5));
             posA.Add(new Vector2(0, 1));
             posA.Add(new Vector2(0, 2));
             posA.Add(new Vector2(0, 3));
-            posA.Add(new Vector2(0, 4));
-            posA.Add(new Vector2(0, 5));
-            posA.Add(new Vector2(0, 6));
+            posA.Add(new Vector2(0, 4));                     
 
             List<Vector2> posB = new List<Vector2>();
             posB.Add(new Vector2(1, -2));
@@ -30,7 +30,7 @@ namespace ConsoleApp1
             posB.Add(new Vector2(1, 4));
             //posB.Add(new Vector2(1, 5));
 
-            MariageDilemme dilemma = new MariageDilemme(posA, posB);
+            MariageDilemme dilemma = new MariageDilemme(5);
             dilemma.Calcouler();
             }
         }
@@ -94,34 +94,64 @@ namespace ConsoleApp1
             b = _b;
             }
 
+        public MariageDilemme(int _count)
+            {
+            a = new List<Vector2>();
+            b = new List<Vector2>();
+            Random rand = new Random(Environment.TickCount);
+
+            for (int i = 0; i < _count; i++)
+                {                
+                Vector2 val = new Vector2(rand.Next(0, 10), rand.Next(0, 10));
+                a.Add(val);               
+                }
+
+            for (int i = 0; i < _count; i++)
+                {
+                Vector2 val = new Vector2(rand.Next(-5, 10), rand.Next(-5, 10));
+                Console.WriteLine(val);
+                b.Add(val);
+                }
+            }
+
         public void Calcouler()
             {
             c = new List<VectorPair>();
             var tempList = new List<Vector2>(b);
+
+            int count = 0;
             foreach (var item in a)
-                {
-                var temp = tempList.OrderBy(x => (x - item).Length()).First();
-                tempList.RemoveAll(x => (x - temp).Length() < 0.01f);
-                c.Add(new VectorPair(item, temp));
+                {                
+                c.Add(new VectorPair(item, b[count]));
+                count++;
                 }
 
             MariagePairs pairs = new MariagePairs(c);
             pairs.Show();
-
-            //Console.WriteLine("Ближ к. 5 " + pairs.RecoirIndexProchenElement(5));
-
+            Console.WriteLine("+++++++++++++++++++++++++++++++ ");
+            HashSet<int> utilised = new HashSet<int>();
+            
             for (int i = 0; i < pairs.pairs.Count; i++)
                 {
-                var indexA = pairs.ChercherIndexMaxPairesDist();
-                int indexB = pairs.RecoirIndexProchenElement(indexA.Item1);
-                pairs.Permutation(indexA.Item1, indexB);
-                Console.WriteLine(Environment.NewLine + indexA.Item1 + " " + indexB);                 
+                var indexVar = pairs.ChercherIndexMaxPairesDist();
+                int indexA = indexVar.Item1;
+                int indexB = pairs.RecoirIndexProchenElement(indexA, utilised);
+                utilised.Add(indexB);
+                pairs.Permutation(indexA, indexB);
+
+                var resN = pairs.ChercherIndexMaxPairesDist();
+
+                if (resN.Item2 > indexVar.Item2)
+                    {
+                    pairs.Permutation(indexA, indexB);
+                    }
+
+                Console.WriteLine("Обмен = " + indexA + " " + indexB + " ;Было " + indexVar.Item2 + " Стало " + resN.Item2);                 
+                pairs.Show();
+                Console.WriteLine("---------------------------");
                 }
-
-            pairs.Show();
-                
-
             
+
 
             }
 
